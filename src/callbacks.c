@@ -90,6 +90,8 @@ selinux_set_callback(int type, union selinux_callback cb)
 	case SELINUX_CB_POLICYLOAD:
 		selinux_netlink_policyload = cb.func_policyload;
 		break;
+        default:
+                break;
 	}
 }
 
