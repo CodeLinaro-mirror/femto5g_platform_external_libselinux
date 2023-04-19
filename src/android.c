@@ -730,7 +730,7 @@ static int seapp_context_lookup(enum seapp_kind kind,
 		 * Fail to prevent staying in the zygote's context.
 		 */
 		selinux_log(SELINUX_ERROR,
-			    "%s:  No match for app with uid %d, seinfo %s, name %s\n",
+			    "%s:  No match for app with uid %u, seinfo %s, name %s\n",
 			    __FUNCTION__, uid, seinfo, pkgname);
 
 		if (security_getenforce() == 1)
@@ -792,7 +792,7 @@ out:
 	context_free(ctx);
 	return rc;
 err:
-	selinux_log(SELINUX_ERROR, "%s:  Error setting context for pkgdir %s, uid %d: %s\n",
+	selinux_log(SELINUX_ERROR, "%s:  Error setting context for pkgdir %s, uid %u: %s\n",
 		    __FUNCTION__, pkgdir, uid, strerror(errno));
 	rc = -1;
 	goto out;
@@ -856,7 +856,7 @@ err:
 				__FUNCTION__, strerror(errno));
 	else 
 		selinux_log(SELINUX_ERROR,
-				"%s:  Error setting context for app with uid %d, seinfo %s: %s\n",
+				"%s:  Error setting context for app with uid %u, seinfo %s: %s\n",
 				__FUNCTION__, uid, seinfo, strerror(errno));
 
 	rc = -1;

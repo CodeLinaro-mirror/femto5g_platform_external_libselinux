@@ -103,7 +103,7 @@ static int process_line(struct selabel_handle *rec,
 	items = sscanf(line_buf, "%255s %255s", prop, context);
 	if (items != 2) {
 		selinux_log(SELINUX_WARNING,
-			    "%s:  line %d is missing fields, skipping\n", path,
+			    "%s:  line %u is missing fields, skipping\n", path,
 			    lineno);
 		return 0;
 	}
@@ -113,7 +113,7 @@ static int process_line(struct selabel_handle *rec,
 		spec_arr[nspec].property_key = strdup(prop);
 		if (!spec_arr[nspec].property_key) {
 			selinux_log(SELINUX_WARNING,
-				    "%s:  out of memory at line %d on prop %s\n",
+				    "%s:  out of memory at line %u on prop %s\n",
 				    path, lineno, prop);
 		return -1;
 	    
@@ -122,7 +122,7 @@ static int process_line(struct selabel_handle *rec,
 		spec_arr[nspec].lr.ctx_raw = strdup(context);
 		if (!spec_arr[nspec].lr.ctx_raw) {
 			selinux_log(SELINUX_WARNING,
-				    "%s:  out of memory at line %d on context %s\n",
+				    "%s:  out of memory at line %u on context %s\n",
 				    path, lineno, context);
 		return -1;
 		}
@@ -130,7 +130,7 @@ static int process_line(struct selabel_handle *rec,
 		if (rec->validating) {
 		        if (selabel_validate(rec, &spec_arr[nspec].lr) < 0) {
 			        selinux_log(SELINUX_WARNING,
-					    "%s:  line %d has invalid context %s\n",
+					    "%s:  line %u has invalid context %s\n",
 					    path, lineno, spec_arr[nspec].lr.ctx_raw);
 			}
 		}
@@ -156,6 +156,8 @@ static int init(struct selabel_handle *rec, const struct selinux_opt *opts,
 		switch (opts[n].type) {
 		case SELABEL_OPT_PATH:
 			path = opts[n].value;
+			break;
+		default:
 			break;
 		}
 
