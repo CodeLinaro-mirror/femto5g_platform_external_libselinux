@@ -301,7 +301,7 @@ static int process_line(struct selabel_handle *rec,
 	items = sscanf(line_buf, "%255s %255s %255s", regex, type, context);
 	if (items < 2) {
 		selinux_log(SELINUX_WARNING,
-			    "%s:  line %d is missing fields, skipping\n", path,
+			    "%s:  line %u is missing fields, skipping\n", path,
 			    lineno);
 		return 0;
 	} else if (items == 2) {
@@ -323,14 +323,14 @@ static int process_line(struct selabel_handle *rec,
 		spec_arr[nspec].regex_str = strdup(regex);
 		if (!spec_arr[nspec].regex_str) {
 			selinux_log(SELINUX_WARNING,
-				   "%s:  out of memory at line %d on regex %s\n",
+				   "%s:  out of memory at line %u on regex %s\n",
 				   path, lineno, regex);
 			return -1;
 
 		}
 		if (rec->validating && compile_regex(data, &spec_arr[nspec], &errbuf)) {
 			selinux_log(SELINUX_WARNING,
-				   "%s:  line %d has invalid regex %s:  %s\n",
+				   "%s:  line %u has invalid regex %s:  %s\n",
 				   path, lineno, regex,
 				   (errbuf ? errbuf : "out of memory"));
 		}
@@ -343,7 +343,7 @@ static int process_line(struct selabel_handle *rec,
 		len = strlen(type);
 		if (type[0] != '-' || len != 2) {
 			selinux_log(SELINUX_WARNING,
-				    "%s:  line %d has invalid file type %s\n",
+				    "%s:  line %u has invalid file type %s\n",
 				    path, lineno, type);
 			return 0;
 		}
@@ -371,7 +371,7 @@ static int process_line(struct selabel_handle *rec,
 			break;
 		default:
 			selinux_log(SELINUX_WARNING,
-				    "%s:  line %d has invalid file type %s\n",
+				    "%s:  line %u has invalid file type %s\n",
 				    path, lineno, type);
 			return 0;
 		}
@@ -382,7 +382,7 @@ static int process_line(struct selabel_handle *rec,
 		if (strcmp(context, "<<none>>") && rec->validating) {
 			if (selabel_validate(rec, &spec_arr[nspec].lr) < 0) {
 				selinux_log(SELINUX_WARNING,
-					    "%s:  line %d has invalid context %s\n",
+					    "%s:  line %u has invalid context %s\n",
 					    path, lineno, spec_arr[nspec].lr.ctx_raw);
 			}
 		}
@@ -424,6 +424,8 @@ static int init(struct selabel_handle *rec, const struct selinux_opt *opts,
 			break;
 		case SELABEL_OPT_BASEONLY:
 			baseonly = !!opts[n].value;
+			break;
+		default:
 			break;
 		}
 

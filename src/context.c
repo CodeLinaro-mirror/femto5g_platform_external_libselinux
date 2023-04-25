@@ -49,6 +49,8 @@ context_t context_new(const char *str)
 		case ' ':
 			if (count < 3)
 				goto err;	/* sanity check */
+		default:
+			break;
 		}
 	}
 	/*
